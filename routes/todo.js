@@ -14,7 +14,7 @@ let todos = [
     },
     {
         id: 3,
-        task: "Ini Adalah Data Baru",
+        task: "Ini Adalah Data Paling Baru",
         complete: false
     }
 ];

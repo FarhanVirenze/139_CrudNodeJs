@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const todoRouter = require('./routes/tododb.js'); // Importing the todo router
+const todoRouter = require('./routes/todo.js'); // Importing the todo router
 require('dotenv').config();
 const port = process.env.PORT;
 
