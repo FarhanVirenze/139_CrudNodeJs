@@ -1,0 +1,91 @@
+<style>
+    /* Styling Container */
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    }
+
+    /* Header Styling */
+    .login-container h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #4e54c8;
+    }
+
+    /* Form Label */
+    .form-label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Form Fields */
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(78, 84, 200, 0.5);
+        border-color: #4e54c8;
+    }
+
+    /* Submit Button */
+    .btn-primary {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: #4e54c8;
+        border: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #3c42a3;
+    }
+
+    /* Link Styling */
+    .login-container a {
+        color: #4e54c8;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .login-container a:hover {
+        color: #3c42a3;
+        text-decoration: underline;
+    }
+
+    /* Text Alignment */
+    .login-container p {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #555;
+    }
+</style>
+
+<div class="login-container">
+    <h1>SignUp</h1>
+    <form action="/signup" method="POST">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p>Sudah punya akun? <a href="/login">Login di sini</a>.</p>
+</div>

@@ -1,18 +1,158 @@
-<div class="container">
-    <h1>Contact Us</h1>
-    <form>
+<style>
+    /* Styling Container */
+    .contact-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        text-align: center;
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
+        color: #fff;
+        padding: 20px;
+        overflow: hidden;
+        position: relative;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* Background Animations */
+    .background-shape {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        filter: blur(80px);
+        border-radius: 50%;
+        animation: floating 6s infinite ease-in-out alternate;
+    }
+
+    .background-shape:nth-child(1) {
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .background-shape:nth-child(2) {
+        bottom: -150px;
+        right: -50px;
+    }
+
+    @keyframes floating {
+        from {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* Form Styling */
+    .contact-form {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 500px;
+        text-align: left;
+    }
+
+    .contact-form h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #fff;
+        text-align: center;
+        text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-form label {
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 1.1rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.8);
+        color: #4e54c8;
+        font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        outline: none;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-form button {
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        background: #f8d210;
+        color: #4e54c8;
+        text-transform: uppercase;
+        width: 100%;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .contact-form button:hover {
+        background: #ffca3a;
+        color: #3c42a3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .contact-form h1 {
+            font-size: 2rem;
+        }
+
+        .contact-form button {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="contact-container">
+    <div class="background-shape"></div>
+    <div class="background-shape"></div>
+
+    <form class="contact-form">
+        <h1>Contact Us</h1>
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" required>
+            <input type="text" class="form-control" id="name" placeholder="Your Name" required>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" required>
+            <input type="email" class="form-control" id="email" placeholder="Your Email" required>
         </div>
         <div class="form-group">
             <label for="message">Message:</label>
-            <textarea class="form-control" id="message" rows="5" required></textarea>
+            <textarea class="form-control" id="message" rows="5" placeholder="Your Message" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+        <button type="submit">Submit</button>
+    </form>
 </div>
+
+<!-- Include Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
