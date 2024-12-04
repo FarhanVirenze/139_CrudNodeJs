@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database/db'); // Import database connection
 
-// Endpoint to get all tasks
+// Get all tasks
 router.get('/', (req, res) => {
     db.query('SELECT * FROM todos', (err, results) => {
         if (err) return res.status(500).send('Internal Server Error');
@@ -10,20 +10,20 @@ router.get('/', (req, res) => {
     });
 });
 
-// Endpoint to get a task by ID
+// Get a specific task by ID
 router.get('/:id', (req, res) => {
     db.query('SELECT * FROM todos WHERE id = ?', [req.params.id], (err, results) => {
         if (err) return res.status(500).send('Internal Server Error');
-        if (results.length === 0) return res.status(404).send('Tugas tidak ditemukan');
+        if (results.length === 0) return res.status(404).send('Task not found');
         res.status(200).json(results[0]);
     });
 });
 
-// Endpoint to add a new task
+// Add a new task
 router.post('/', (req, res) => {
     const { task } = req.body;
     if (!task || task.trim() === '') {
-        return res.status(400).send('Tugas tidak boleh kosong');
+        return res.status(400).send('Task cannot be empty');
     }
 
     db.query('INSERT INTO todos (task, completed) VALUES (?, false)', [task.trim()], (err, results) => {
@@ -33,23 +33,23 @@ router.post('/', (req, res) => {
     });
 });
 
-// Endpoint to update a task
+// Update an existing task
 router.put('/:id', (req, res) => {
     const { task, completed } = req.body;
 
     db.query('UPDATE todos SET task = ?, completed = ? WHERE id = ?', [task, completed, req.params.id], (err, results) => {
         if (err) return res.status(500).send('Internal Server Error');
-        if (results.affectedRows === 0) return res.status(404).send('Tugas tidak ditemukan');
-        res.status(200).json({ message: 'Tugas berhasil diperbarui', updatedTodo: { id: req.params.id, task, completed } });
+        if (results.affectedRows === 0) return res.status(404).send('Task not found');
+        res.status(200).json({ message: 'Task successfully updated', updatedTodo: { id: req.params.id, task, completed } });
     });
 });
 
-// Endpoint to delete a task
+// Delete a task
 router.delete('/:id', (req, res) => {
     db.query('DELETE FROM todos WHERE id = ?', [req.params.id], (err, results) => {
         if (err) return res.status(500).send('Internal Server Error');
-        if (results.affectedRows === 0) return res.status(404).send('Tugas tidak ditemukan');
-        res.status(200).json({ message: `Tugas dengan ID ${req.params.id} telah dihapus` });
+        if (results.affectedRows === 0) return res.status(404).send('Task not found');
+        res.status(200).json({ message: `Task with ID ${req.params.id} has been deleted` });
     });
 });
 

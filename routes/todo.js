@@ -1,30 +1,18 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 let todos = [
-    {
-        id: 1,
-        task: "Belajar node.js",
-        complete: false
-    },
-    {
-        id: 2,
-        task: "Membuat API",
-        complete: true
-    },
-    {
-        id: 3,
-        task: "Ini Adalah Data Paling Baru",
-        complete: false
-    }
+    { id: 1, task: "Learn Node.js", complete: false },
+    { id: 2, task: "Build an API", complete: true },
+    { id: 3, task: "Create sample data", complete: false }
 ];
 
-// Handle GET request to /todos
+// Get all tasks
 router.get('/', (req, res) => {
-    res.json(todos); // Send 200 OK response with todos data
+    res.json(todos);
 });
 
-// POST method
+// Add a new task
 router.post('/', (req, res) => {
     const newTodo = {
         id: todos.length + 1,
@@ -35,30 +23,20 @@ router.post('/', (req, res) => {
     res.status(201).json(newTodo);
 });
 
-// DELETE method
-router.delete('/:id', (req, res) => {
-    const todoIndex = todos.findIndex(i => i.id === parseInt(req.params.id));
-    if (todoIndex === -1) {
-        return res.status(404).json({ message: "Task not found!" });
-    }
-
-    const deletedTodo = todos.splice(todoIndex, 1)[0];
-    res.status(200).json({ message: `Tugas ${deletedTodo.task} telah dihapus` });
-});
-
-// PUT method
+// Update a task
 router.put('/:id', (req, res) => {
     const todo = todos.find(t => t.id === parseInt(req.params.id));
-    if (!todo) {
-        return res.status(404).json({ message: "Tugas tidak ditemukan" });
-    }
-
+    if (!todo) return res.status(404).send('Task not found');
     todo.task = req.body.task || todo.task;
+    res.json({ message: 'Task updated', updatedTodo: todo });
+});
 
-    res.status(200).json({
-        message: `Tugas dengan ID ${todo.id} telah diperbarui`,
-        updatedTodo: todo
-    });
+// Delete a task
+router.delete('/:id', (req, res) => {
+    const index = todos.findIndex(t => t.id === parseInt(req.params.id));
+    if (index === -1) return res.status(404).send('Task not found');
+    const deleted = todos.splice(index, 1);
+    res.json({ message: `Task "${deleted[0].task}" deleted` });
 });
 
 module.exports = router;

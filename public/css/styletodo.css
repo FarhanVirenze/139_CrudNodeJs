@@ -1,0 +1,161 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    animation: fadeIn 0.8s ease-in-out; /* Added fade-in animation for body */
+}
+
+/* Ubah warna default close button */
+.btn-close {
+    background-color: white; /* Warna ungu */
+    border: none;
+    opacity: 1; /* Pastikan terlihat penuh */
+    transition: background-color 0.3s ease;
+    animation: fadeIn 0.8s ease-in-out; /* Added fade-in animation */
+}
+
+/* Hover effect untuk close button */
+.btn-close:hover {
+    background-color: rgb(223, 223, 223); /* Warna putih */
+}
+
+/* Tambahkan warna untuk icon X */
+.btn-close::before {
+    color: white; /* Warna putih pada ikon */
+    font-size: 1.2rem; /* Ukuran ikon */
+}
+
+/* Card Styles */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    background-color: #fff;
+    animation: fadeIn 0.6s ease-in-out; /* Added fade-in animation for cards */
+}
+
+/* Card Hover Animation */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background-color: #f0f8ff;
+}
+
+/* Smooth hover transition for buttons */
+.btn:hover {
+    opacity: 0.85;
+    animation: bounce 0.5s ease; /* Added bounce animation for buttons */
+}
+
+/* Centered content within the card */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out; /* Added fade-in animation */
+}
+
+/* Smooth modal transition */
+.modal-content {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    animation: fadeIn 0.8s ease-in-out; /* Added fade-in animation for modal */
+}
+
+.modal.fade.show .modal-content {
+    opacity: 1;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #4e54c8;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 2.5rem;
+    margin-bottom: 5rem;
+    width: 15%;
+}
+
+/* Button Hover Animation */
+.btn-primary:hover {
+    background-color: #3c42a3;
+    transform: translateY(-3px);
+}
+
+/* Edit and Delete Button Styles */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    border-radius: 5px;
+}
+
+/* Modal Header Styling */
+.modal-header {
+    background-color: #4e54c8;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    animation: fadeIn 0.6s ease-in-out; /* Added fade-in animation */
+}
+
+/* Modal Body Styling */
+.modal-body {
+    background-color: #f9f9f9;
+    animation: fadeIn 0.6s ease-in-out; /* Added fade-in animation */
+}
+
+/* Animation for adding cards */
+.animated-card {
+    animation: fadeIn 0.5s ease-in-out, scaleUp 0.4s ease-out; /* Added scale animation for cards */
+}
+
+/* Keyframes for fade-in effect */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); /* Move element from below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Bring element to its original position */
+    }
+}
+
+/* Keyframes for scale-up effect */
+@keyframes scaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Bounce effect on hover for buttons */
+.btn-primary:hover, .btn-sm:hover {
+    animation: bounce 0.5s ease; /* Added bounce animation */
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-5px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-2px);
+    }
+}

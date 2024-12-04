@@ -1,59 +1,109 @@
+<link rel="stylesheet" href="/css/styletodo.css">
+<link rel="stylesheet" href="/css/stylefootertodo.css">
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Todo List</h1>
 
-    <!-- Form to Add New Todo -->
-    <form id="addTodoForm" class="my-4 d-flex justify-content-center">
-        <div class="input-group w-75">
-            <input type="text" id="newTask" class="form-control form-control-lg" placeholder="Add a new task..." required>
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-lg btn-primary">Add Task</button>
-            </div>
-        </div>
-    </form>
-
-    <!-- List of Todos -->
-    <div class="card shadow-sm">
-        <ul id="todoList" class="list-group list-group-flush">
-            <% todos.forEach(todo => { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="<%= todo.completed ? 'completed' : '' %> task-text">
-                    <%= todo.task %>
-                </span>
-                <div>
-                    <button class="btn btn-sm btn-outline-success mr-2 editBtn" data-id="<%= todo.id %>">Edit</button>
-                    <button class="btn btn-sm btn-outline-danger deleteBtn" data-id="<%= todo.id %>">Delete</button>
-                </div>
-            </li>
-            <% }); %>
-        </ul>
+    <!-- Centered Button to trigger Add Todo Modal -->
+    <div class="d-flex justify-content-center mb-3">
+        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addModal">
+            Add Todo
+        </button>
     </div>
 
-    <!-- Edit Todo Modal -->
-    <div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Todo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editTodoForm">
-                        <div class="form-group">
-                            <label for="editTask">Task</label>
-                            <input type="text" id="editTask" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3 w-100">Save Changes</button>
-                    </form>
-                </div>
+    <!-- List of Todos -->
+    <div class="row" id="todoList">
+        <!-- Cards will be dynamically added here -->
+    </div>
+</div>
+
+<!-- Add Todo Modal -->
+<div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add Todo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addTodoForm">
+                    <div class="form-group mb-3">
+                        <label for="newTask">Task</label>
+                        <input type="text" id="newTask" class="form-control" placeholder="Enter a task" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Add Task</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Edit Todo Modal -->
+<div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Todo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTodoForm">
+                    <div class="form-group mb-3">
+                        <label for="editTask">Task</label>
+                        <input type="text" id="editTask" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
 <script>
     $(document).ready(function () {
-        // Add new todo
+        // Function to load todos
+        function loadTodos() {
+            $.ajax({
+                url: '/todo',
+                type: 'GET',
+                success: function (todos) {
+                    const todoList = $('#todoList');
+                    todoList.empty();
+                    if (todos.length === 0) {
+                        todoList.append('<p class="text-center">No todos available!</p>');
+                    } else {
+                        todos.forEach(todo => {
+                            todoList.append(`
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${todo.task}</h5>
+                                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                                <button class="btn btn-warning btn-sm editBtn" data-id="${todo.id}" data-task="${todo.task}">Edit</button>
+                                                <button class="btn btn-danger btn-sm deleteBtn" data-id="${todo.id}">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error("Error loading todos:", error.responseText);
+                }
+            });
+        }
+
+        // Initial load of todos
+        loadTodos();
+
+        // Add Todo Form Submission
         $('#addTodoForm').on('submit', function (e) {
             e.preventDefault();
             const task = $('#newTask').val().trim();
@@ -62,52 +112,60 @@
                     url: '/todo',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ task: task }),
-                    success: function (newTodo) {
-                        $('#newTask').val("");  // Clear input field
-                        location.reload(); // Reload to show the new todo
+                    data: JSON.stringify({ task }),
+                    success: function () {
+                        $('#newTask').val('');
+                        $('#addModal').modal('hide');
+                        loadTodos();
                     },
                     error: function (error) {
-                        console.error("Error adding task:", error.responseText);
+                        console.error("Error adding todo:", error.responseText);
                     }
                 });
             }
         });
 
-        // Delete a todo
-        $('.deleteBtn').on('click', function () {
+        // Delete Todo
+        $('#todoList').on('click', '.deleteBtn', function () {
             const id = $(this).data('id');
-            $.ajax({
-                url: '/todo/' + id,
-                type: 'DELETE',
-                success: function () {
-                    location.reload(); // Reload to show updated list
-                }
-            });
+            if (confirm('Are you sure you want to delete this task?')) {
+                $.ajax({
+                    url: '/todo/' + id,
+                    type: 'DELETE',
+                    success: loadTodos,
+                    error: function (error) {
+                        console.error("Error deleting todo:", error.responseText);
+                    }
+                });
+            }
         });
 
-        // Show edit modal with the current task
-        let editId;
-        $('.editBtn').on('click', function () {
-            editId = $(this).data('id');
-            const currentTask = $(this).closest('li').find('span').text();
-            $('#editTask').val(currentTask);
+        // Show Edit Modal
+        $('#todoList').on('click', '.editBtn', function () {
+            const id = $(this).data('id');
+            const task = $(this).data('task');
+            $('#editTask').val(task);
+            $('#editTodoForm').data('id', id);
             $('#editModal').modal('show');
         });
 
-        // Update todo on form submission
+        // Edit Todo Form Submission
         $('#editTodoForm').on('submit', function (e) {
             e.preventDefault();
+            const id = $(this).data('id');
             const task = $('#editTask').val().trim();
             if (task) {
                 $.ajax({
-                    url: '/todo/' + editId,
+                    url: '/todo/' + id,
                     type: 'PUT',
-                    data: JSON.stringify({ task: task, completed: false }),
                     contentType: 'application/json',
+                    data: JSON.stringify({ task }),
                     success: function () {
-                        $('#editModal').modal('hide'); // Close modal
-                        location.reload(); // Reload to show the updated todo
+                        $('#editModal').modal('hide');
+                        loadTodos();
+                    },
+                    error: function (error) {
+                        console.error("Error editing todo:", error.responseText);
                     }
                 });
             }
@@ -115,91 +173,19 @@
     });
 </script>
 
-<style>
-    /* General layout */
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f7fa;
-    }
-
-    .container {
-        max-width: 800px;
-        margin-top: 40px;
-    }
-
-    /* Task styles */
-    .task-text {
-        font-size: 1.1rem;
-        color: #333;
-        word-wrap: break-word;
-        transition: color 0.3s ease;
-    }
-
-    .completed {
-        text-decoration: line-through;
-        color: #6c757d;
-    }
-
-    /* Button styles */
-    .btn-sm {
-        padding: 0.375rem 0.75rem;
-        font-size: 0.875rem;
-        transition: all 0.3s ease;
-    }
-
-    .btn-outline-success,
-    .btn-outline-danger {
-        border-radius: 30px;
-        border-width: 2px;
-    }
-
-    .btn-outline-success:hover,
-    .btn-outline-danger:hover {
-        background-color: #f8f9fa;
-        border-color: #28a745;
-    }
-
-    /* Modal Styles */
-    .modal-content {
-        border-radius: 8px;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-header {
-        background-color: #f8f9fa;
-    }
-
-    /* Card Styles */
-    .card {
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-
-    .list-group-item {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        transition: background-color 0.3s ease;
-    }
-
-    .list-group-item:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Form & Input Styles */
-    .input-group {
-        border-radius: 0.25rem;
-    }
-
-    .input-group input,
-    .input-group button {
-        border-radius: 0.25rem;
-    }
-
-    /* Modal Save button */
-    #editTodoForm .btn-primary {
-        width: 100%;
-        padding: 12px;
-        border-radius: 30px;
-    }
-</style>
+<!-- Footer Section -->
+<footer class="footer-container">
+    <div class="social-icons">
+        <!-- Instagram Logo -->
+        <a href="https://www.instagram.com/xffarhan__?igsh=MWdqMnJibHJmb2FkZg==" target="_blank" class="social-icon">
+            <img src="/image/instagramlogo.jpg" alt="Instagram" />
+        </a>
+        <!-- GitHub Logo -->
+        <a href="https://github.com/FarhanVirenze" target="_blank" class="social-icon">
+            <img src="/image/githublogo.png" alt="GitHub" />
+        </a>
+    </div>
+    <div class="footer-content">
+        <p>&copy; 2024 Muhamad Farhan. All Rights Reserved.</p>
+    </div>
+</footer>
