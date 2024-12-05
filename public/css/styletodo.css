@@ -2,7 +2,6 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f7fa;
-    animation: fadeIn 0.8s ease-in-out; /* Added fade-in animation for body */
 }
 
 /* Ubah warna default close button */
@@ -65,7 +64,6 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    animation: fadeIn 0.8s ease-in-out; /* Added fade-in animation for modal */
 }
 
 .modal.fade.show .modal-content {
@@ -101,7 +99,6 @@ body {
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    animation: fadeIn 0.6s ease-in-out; /* Added fade-in animation */
 }
 
 /* Modal Body Styling */
